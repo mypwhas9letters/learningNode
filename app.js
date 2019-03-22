@@ -1,19 +1,25 @@
-const chalk = require('chalk')
 const yargs = require('yargs')
+const utils = require('./util.js')
+console.log(utils.getNotes())
 
 yargs.command({
-  command: 'remove',
-  describe: 'Remove a note',
+  command: 'add',
+  describe: 'Add a note',
   builder: {
     title:{
-      describe: "Note title",
+      describe: "Note title", //Name of params in the terminal
+      demandOption: true, //require option
+      type: 'string' //type of input
+    },
+    body: {
+      describe: 'Node Body',
       demandOption: true,
       type: 'string'
     }
-  }
+  },
   handler: function(argv) {
-    console.log('Removing a note')
+    utils.addNotes(argv.title, argv.body)
   }
 })
 
-console.log(yargs.argv)
+yargs.parse()
