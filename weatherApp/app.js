@@ -5,16 +5,16 @@ const input = process.argv[2]
 if (!input) {
   console.log("No Address")
 } else {
-  geocode(input, (err, {lat, long, location}) => {
+  geocode(input, (err, data) => {
     if(err) {
       return console.log('Error', err)
    }
 
-   forecast(lat, long, (err, forecastData) => {
+   forecast(data.lat, data.long, (err, forecastData) => {
      if(err){
        console.log('Error', err)
       }
-      console.log(location)
+      console.log(data.location)
       console.log(forecastData)
     })
   })
