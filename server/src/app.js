@@ -1,5 +1,7 @@
 const express = require('express')
 const path = require('path')
+const geocode = require('./utils/geocode.js')
+const forecast = require('./utils/forecast.js')
 
 const app = express()
 const publicDirPath = path.join(__dirname, '../public')
@@ -12,9 +14,20 @@ app.get('/weather', (req,res) => {
       error: "No address provided"
     })
   }
-  res.send({
-    address: req.query.address
 
+  geocode(req.query.address, (err, {lat, long, location}) => {
+    if(err) {
+      return console.log('Error', err)
+   }
+   forecast(lat, long, (err, forecastData) => {
+     if(err){
+       return res.send({ error })
+      }
+      res.send({
+        location,
+        data: forecastData
+      })
+    })
   })
 })
 
